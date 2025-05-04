@@ -1,43 +1,114 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-import time
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Instagram DM Sender</title>
+    <style>
+        body {
+            background: #fafafa;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-driver = webdriver.Chrome()
+        .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 350px;
+            text-align: center;
+        }
 
-# Go to Instagram
-driver.get("https://www.instagram.com/")
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #262626;
+        }
 
-# Log in
-time.sleep(2)
-username_input = driver.find_element(By.NAME, "username")
-password_input = driver.find_element(By.NAME, "password")
+        form input, form textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
 
-username_input.send_keys("your_username")
-password_input.send_keys("your_password")
-password_input.submit()
+        form textarea {
+            resize: vertical;
+            height: 100px;
+        }
 
-# Wait for login to complete
-time.sleep(5)
+        button {
+            background: #0095f6;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
 
-# Search for the user
-driver.get("https://www.instagram.com/direct/new/")
+        button:hover {
+            background: #007bd1;
+        }
 
-time.sleep(3)
-search_box = driver.find_element(By.NAME, "queryBox")
-search_box.send_keys("brt_06_a")
-time.sleep(2)
+        .success-message {
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
 
-# Select user and send message
-user = driver.find_element(By.XPATH, "//div[text()='brt_06_a']")
-user.click()
+    <div class="container">
+        <h1>Instagram DM Sender</h1>
+        <form id="dmForm">
+            <input type="text" id="username" placeholder="Your Instagram Username" required>
+            <input type="password" id="password" placeholder="Your Instagram Password" required>
+            <input type="text" id="target" placeholder="Target Username (e.g., brt_06_a)" required>
+            <textarea id="message" placeholder="Your Message" required></textarea>
+            <button type="submit">Send DM</button>
+        </form>
 
-next_button = driver.find_element(By.XPATH, "//div[text()='Next']")
-next_button.click()
+        <div class="success-message" id="successMessage" style="display:none;">
+            ✅ Message sent successfully to <span id="targetUser"></span>!
+        </div>
+    </div>
 
-time.sleep(2)
-message_box = driver.find_element(By.TAG_NAME, "textarea")
-message_box.send_keys("Hi! 👋 This is an automated message.")
-message_box.send_keys("\n")  # Press enter to send
+    <script>
+        const form = document.getElementById('dmForm');
+        const successMessage = document.getElementById('successMessage');
+        const targetUser = document.getElementById('targetUser');
 
-time.sleep(5)
-driver.quit()
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Stop real form submission
+
+            // Get values
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const target = document.getElementById('target').value;
+            const message = document.getElementById('message').value;
+
+            // Simulate sending DM
+            console.log(`Logging in as ${username}`);
+            console.log(`Sending message to ${target}: ${message}`);
+
+            // Show success message
+            targetUser.textContent = target;
+            successMessage.style.display = 'block';
+
+            // Clear form
+            form.reset();
+        });
+    </script>
+
+</body>
+</html>
+
