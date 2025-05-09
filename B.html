@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Advanced Big or Small Dice Game</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .game-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 300px;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .dice-display {
+      font-size: 100px;
+      margin: 20px 0;
+      transition: transform 0.3s;
+    }
+
+    .buttons button {
+      margin: 10px 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .big-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .small-btn {
+      background-color: #2196F3;
+      color: white;
+    }
+
+    .restart-btn {
+      background-color: #f44336;
+      color: white;
+      margin-top: 20px;
+    }
+
+    #result {
+      font-size: 22px;
+      margin-top: 15px;
+    }
+
+    #scoreboard {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="game-container">
+  <h1>Predict Big (>3) or Small (≤3)</h1>
+  <div class="dice-display" id="dice">🎲</div>
+  <div class="buttons">
+    <button onclick="rollDice('Big')" class="big-btn">Big</button>
+    <button onclick="rollDice('Small')" class="small-btn">Small</button>
+  </div>
+  <div id="result"></div>
+  <div id="scoreboard">Wins: 0 | Losses: 0</div>
+  <button onclick="restartGame()" class="restart-btn">Restart</button>
+</div>
+
+<script>
+  let wins = 0;
+  let losses = 0;
+
+  function rollDice(prediction) {
+    const dice = document.getElementById('dice');
+    const result = document.getElementById('result');
+    const scoreboard = document.getElementById('scoreboard');
+
+    // Animate dice
+    dice.style.transform = "rotate(20deg)";
+    setTimeout(() => {
+      dice.style.transform = "rotate(-20deg)";
+    }, 150);
+    setTimeout(() => {
+      dice.style.transform = "rotate(0deg)";
+    }, 300);
+
+    // After animation, roll
+    setTimeout(() => {
+      const roll = Math.floor(Math.random() * 6) + 1;
+      const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+      dice.textContent = diceFaces[roll - 1];
+
+      if ((roll > 3 && prediction === 'Big') || (roll <= 3 && prediction === 'Small')) {
+        result.textContent = "You Win!";
+        result.style.color = "green";
+        wins++;
+      } else {
+        result.textContent = "You Lose!";
+        result.style.color = "red";
+        losses++;
+      }
+
+      scoreboard.textContent = `Wins: ${wins} | Losses: ${losses}`;
+    }, 350);
+  }
+
+  function restartGame() {
+    wins = 0;
+    losses = 0;
+    document.getElementById('dice').textContent = "🎲";
+    document.getElementById('result').textContent = "";
+    document.getElementById('scoreboard').textContent = "Wins: 0 | Losses: 0";
+  }
+</script>
+
+</body>
+</html>
