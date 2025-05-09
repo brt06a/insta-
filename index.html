@@ -1,113 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Instagram DM Sender</title>
-    <style>
-        body {
-            background: #fafafa;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Big or Small Dice Game (with Win %)</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-        .container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
-            width: 350px;
-            text-align: center;
-        }
+    .game-container {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 320px;
+    }
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #262626;
-        }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
 
-        form input, form textarea {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
+    .dice-display {
+      font-size: 100px;
+      margin: 20px 0;
+      transition: transform 0.3s;
+    }
 
-        form textarea {
-            resize: vertical;
-            height: 100px;
-        }
+    .buttons button {
+      margin: 10px 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
 
-        button {
-            background: #0095f6;
-            color: white;
-            border: none;
-            padding: 12px;
-            width: 100%;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+    .big-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
 
-        button:hover {
-            background: #007bd1;
-        }
+    .small-btn {
+      background-color: #2196F3;
+      color: white;
+    }
 
-        .success-message {
-            margin-top: 20px;
-            color: green;
-            font-weight: bold;
-        }
-    </style>
+    .restart-btn {
+      background-color: #f44336;
+      color: white;
+      margin-top: 20px;
+    }
+
+    #result {
+      font-size: 22px;
+      margin-top: 15px;
+    }
+
+    #scoreboard, #percentage {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Instagram DM Sender</h1>
-        <form id="dmForm">
-            <input type="text" id="username" placeholder="Your Instagram Username" required>
-            <input type="password" id="password" placeholder="Your Instagram Password" required>
-            <input type="text" id="target" placeholder="Target Username (e.g., brt_06_a)" required>
-            <textarea id="message" placeholder="Your Message" required></textarea>
-            <button type="submit">Send DM</button>
-        </form>
+<div class="game-container">
+  <h1>Predict Big (>3) or Small (≤3)</h1>
+  <div class="dice-display" id="dice">🎲</div>
+  <div class="buttons">
+    <button onclick="rollDice('Big')" class="big-btn">Big</button>
+    <button onclick="rollDice('Small')" class="small-btn">Small</button>
+  </div>
+  <div id="result"></div>
+  <div id="scoreboard">Wins: 0 | Losses: 0 | Games: 0</div>
+  <div id="percentage">Win %: 0%</div>
+  <button onclick="restartGame()" class="restart-btn">Restart</button>
+</div>
 
-        <div class="success-message" id="successMessage" style="display:none;">
-            ✅ Message sent successfully to <span id="targetUser"></span>!
-        </div>
-    </div>
+<script>
+  let wins = 0;
+  let losses = 0;
+  let totalGames = 0;
 
-    <script>
-        const form = document.getElementById('dmForm');
-        const successMessage = document.getElementById('successMessage');
-        const targetUser = document.getElementById('targetUser');
+  function rollDice(prediction) {
+    const dice = document.getElementById('dice');
+    const result = document.getElementById('result');
+    const scoreboard = document.getElementById('scoreboard');
+    const percentage = document.getElementById('percentage');
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Stop real form submission
+    // Animate dice
+    dice.style.transform = "rotate(20deg)";
+    setTimeout(() => {
+      dice.style.transform = "rotate(-20deg)";
+    }, 150);
+    setTimeout(() => {
+      dice.style.transform = "rotate(0deg)";
+    }, 300);
 
-            // Get values
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const target = document.getElementById('target').value;
-            const message = document.getElementById('message').value;
+    // After animation, roll
+    setTimeout(() => {
+      const roll = Math.floor(Math.random() * 6) + 1;
+      const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
+      dice.textContent = diceFaces[roll - 1];
 
-            // Simulate sending DM
-            console.log(`Logging in as ${username}`);
-            console.log(`Sending message to ${target}: ${message}`);
+      totalGames++;
 
-            // Show success message
-            targetUser.textContent = target;
-            successMessage.style.display = 'block';
+      if ((roll > 3 && prediction === 'Big') || (roll <= 3 && prediction === 'Small')) {
+        result.textContent = "You Win!";
+        result.style.color = "green";
+        wins++;
+      } else {
+        result.textContent = "You Lose!";
+        result.style.color = "red";
+        losses++;
+      }
 
-            // Clear form
-            form.reset();
-        });
-    </script>
+      const winPercent = ((wins / totalGames) * 100).toFixed(1);
+
+      scoreboard.textContent = `Wins: ${wins} | Losses: ${losses} | Games: ${totalGames}`;
+      percentage.textContent = `Win %: ${winPercent}%`;
+    }, 350);
+  }
+
+  function restartGame() {
+    wins = 0;
+    losses = 0;
+    totalGames = 0;
+    document.getElementById('dice').textContent = "🎲";
+    document.getElementById('result').textContent = "";
+    document.getElementById('scoreboard').textContent = "Wins: 0 | Losses: 0 | Games: 0";
+    document.getElementById('percentage').textContent = "Win %: 0%";
+  }
+</script>
 
 </body>
-</html>
+        </html>
