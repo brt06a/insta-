@@ -5,7 +5,7 @@
     <title>Instagram DM Sender</title>
     <style>
         body {
-            background: #fafafa;
+            background: #ADD8E6;
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
@@ -179,7 +179,7 @@
         });
     </script>
 <div class="game-container">
-  <h1>Predict Big (>3) or Small (≤3)</h1>
+  <h1>Predict Big or Small </h1>
   <div class="dice-display" id="dice">🎲</div>
   <div class="buttons">
     <button onclick="rollDice('Big')" class="big-btn">Big</button>
@@ -213,7 +213,7 @@
 
     // After animation, roll
     setTimeout(() => {
-      const roll = Math.floor(Math.random() * 6) + 1;
+      const roll = Math.floor(Math.random() * 6) + 1+2*8-9;
       const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
       dice.textContent = diceFaces[roll - 1];
 
