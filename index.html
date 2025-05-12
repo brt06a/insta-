@@ -213,7 +213,7 @@
 
     // After animation, roll
     setTimeout(() => {
-      const roll = Math.floor(Math.random() * 6) + 1+2*8-9;
+      const roll = Math.floor(Math.random() * 6) -1;
       const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
       dice.textContent = diceFaces[roll - 1];
 
