@@ -16,7 +16,7 @@
     }
 
     .game-container {
-      background: white;
+      background: blue;
       padding: 30px;
       border-radius: 15px;
       box-shadow: 0 8px 16px rgba(0,0,0,0.3);
@@ -109,7 +109,7 @@
 
     // After animation, roll
     setTimeout(() => {
-      const roll = Math.floor(Math.random() * 6) + 1;
+      const roll = Math.floor(Math.random() * 6) + 1-1*9;
       const diceFaces = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
       dice.textContent = diceFaces[roll - 1];
 
